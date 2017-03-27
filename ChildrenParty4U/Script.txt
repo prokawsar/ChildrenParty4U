@@ -1,0 +1,33 @@
+// For Booking System
+
+var unavailable_hash = {
+	'9-4-2017': false,
+  '14-4-2017': false,
+  '15-4-2017': false
+};
+
+var current_date = new Date();
+current_date.setDate(current_date.getDate() - 1);
+
+var availability_check = function (date) {
+	var date_str = date.getDate()+'-'+(date.getMonth()+1)+'-'+date.getFullYear();
+
+  var logic = date < current_date;
+  logic = logic || (date_str in unavailable_hash && unavailable_hash[date_str] === false);
+
+  if (logic) {
+    return [false, '', 'Unavailable'];
+  } else {
+    return [true, '', 'Available'];
+  }
+};
+
+$(function() {
+  $("#datepicker").datepicker({
+    minDate: -0,
+    maxDate: "+1M +15D",
+    beforeShowDay: availability_check
+ 	});
+});
+
+// http://stackoverflow.com/questions/10220642/pass-php-array-into-javascript-array
